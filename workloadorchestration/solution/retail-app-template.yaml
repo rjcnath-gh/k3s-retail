@@ -1,0 +1,13 @@
+schema:
+  name: retail-app-schema
+  version: 1.0.0
+configs:
+  AppName: retail-app
+  DeploymentName: RetailAppDeploy
+  EnergySaveThreshold: ${{$val(EnergySaveThreshold)}}
+  PromotionPercentOff: ${{$val(PromotionPercentOff)}}
+  StoreManager: ${{$val(StoreManager)}}
+  LoyaltyDiscount: ${{$val(LoyaltyDiscount)}}
+  OnlineOrders: ${{$val(OnlineOrders)}}
+  StoreLayoutOverride: ${{$val(StoreLayoutOverride)}}
+  EnergySaveOverride: ${{$val(EnergySaveOverride)}}
