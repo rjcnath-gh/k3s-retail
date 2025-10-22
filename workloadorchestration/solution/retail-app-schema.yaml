@@ -1,0 +1,54 @@
+metadata:
+  name: retail-app-schema
+  version: 1.0.0
+rules:
+  configs:
+      EnergySaveThreshold:
+        type: int
+        required: true
+        editableAt:
+          - corporate
+        editableBy:
+          - IT
+      PromotionPercentOff:
+        type: int
+        required: true
+        editableAt:
+          - corporate
+        editableBy:
+          - IT
+      StoreManager:
+        type: string
+        required: true
+        editableAt:
+          - local
+        editableBy:
+          - OT
+      LoyaltyDiscount:
+        type: float
+        required: true
+        editableAt:
+          - local
+        editableBy:
+          - OT
+      OnlineOrders:
+        type: boolean
+        required: true
+        editableAt:
+          - local
+        editableBy:
+          - OT
+      StoreLayoutOverride:
+        type: boolean
+        required: true
+        editableAt:
+          - local
+        editableBy:
+          - OT
+      EnergySaveOverride:
+        type: boolean
+        required: true
+        editableAt:
+          - local
+        editableBy:
+          - OT
