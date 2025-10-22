@@ -1,0 +1,6 @@
+
+📎 Connect your new cluster to Azure Arc:
+   
+   az login --tenant $TENANT_ID
+   az account set -s $SUBSCRIPTION_ID
+   az connectedk8s connect -n $CLUSTER_NAME -g $RESOURCE_GROUP -l $LOCATION
