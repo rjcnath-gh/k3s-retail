@@ -86,6 +86,7 @@ az workload-orchestration target create   --resource-group "$RESOURCE_GROUP"   -
 
 # create solutions
 echo "create solutions ..."
+
 # Create schema 
 echo "create solution schema ..."
 az workload-orchestration schema create --resource-group $RESOURCE_GROUP --schema-file workloadorchestration/solution/retail-app-schema.yaml --schema-name retail-app-schema --version 1.0.0

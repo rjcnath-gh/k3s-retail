@@ -1,6 +1,8 @@
 
-📎 Connect your new cluster to Azure Arc:
+📎 This needs to be executed only one time when codespace is first created:
    
-   az login --tenant $TENANT_ID
-   az account set -s $SUBSCRIPTION_ID
-   az connectedk8s connect -n $CLUSTER_NAME -g $RESOURCE_GROUP -l $LOCATION
+   az login --tenant $TENANT_ID --use-device-code
+   
+   After the login completes, please execute to setup workload-orchestration
+   
+   . .devcontainer/woquickstart.sh
