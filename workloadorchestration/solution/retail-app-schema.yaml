@@ -7,16 +7,16 @@ rules:
         type: int
         required: true
         editableAt:
-          - corporate
+          - local
         editableBy:
-          - IT
+          - OT
       PromotionPercentOff:
         type: int
         required: true
         editableAt:
-          - corporate
+          - local
         editableBy:
-          - IT
+          - OT
       StoreManager:
         type: string
         required: true
