@@ -63,11 +63,11 @@ echo "Setup context, site, references and targets"
 
 # Create context
 echo "create context ..."
-az workload-orchestration context create --resource-group $RESOURCE_GROUP --location $LOCATION --context-name $RESOURCE_GROUP-context --capabilities '[{"name":"azure-soap","description":"azure-soap"},{"name":"azure-shampoo","description":"azure-shampoo"}]' --hierarchies '[{"name":"factory","description":"factory"},{"name":"line","description":"line"}]' 
+az workload-orchestration context create --resource-group $RESOURCE_GROUP --location $LOCATION --context-name $RESOURCE_GROUP-context --capabilities '[{"name":"grocery","description":"grocery"},{"name":"apparel","description":"apparel"},{"name":"home","description":"home"},{"name":"petrol","description":"petrol"}]' --hierarchies '[{"name":"corporate","description":"corporate"},{"name":"local","description":"local"}]' 
 
 # Create Site and link to context
 echo "create site ..."
-az rest   --method put   --url "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Edge/sites/$RESOURCE_GROUP-site?api-version=2025-03-01-preview"   --body '{"properties":{"displayName":"TestPlant","description":"Test Site and Plant","labels":{"level":"factory"}}}' --resource "https://management.azure.com"
+az rest   --method put   --url "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Edge/sites/$RESOURCE_GROUP-site?api-version=2025-03-01-preview"   --body '{"properties":{"displayName":"Retail","description":"Retail Stores","labels":{"level":"corporate"}}}' --resource "https://management.azure.com"
 
 echo "link site with context ..."
 az workload-orchestration context site-reference create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --context-name $RESOURCE_GROUP-context --name $RESOURCE_GROUP-siteref --site-id "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Edge/sites/$RESOURCE_GROUP-site"
@@ -80,17 +80,20 @@ custLocId=$(az customlocation show --resource-group $RESOURCE_GROUP --name $CLUS
 yq -i ".name = \"$custLocId\"" workloadorchestration/targets/customlocation.json
 
 # create targets
-az workload-orchestration target create   --resource-group "$RESOURCE_GROUP"   --location "$LOCATION"   --name "${RESOURCE_GROUP}-line-1"   --display-name "${RESOURCE_GROUP}-line-1"   --hierarchy-level "line"   --capabilities '["azure-soap","azure-shampoo"]'   --description "line"   --solution-scope "testapp"   --target-specification @workloadorchestration/targets/targetspecs.json   --extended-location @workloadorchestration/targets/customlocation.json   --context-id "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Edge/contexts/$RESOURCE_GROUP-context"
-az workload-orchestration target create   --resource-group "$RESOURCE_GROUP"   --location "$LOCATION"   --name "${RESOURCE_GROUP}-line-2"   --display-name "${RESOURCE_GROUP}-line-2"   --hierarchy-level "line"   --capabilities '["azure-soap","azure-shampoo"]'   --description "line"   --solution-scope "testapp"   --target-specification @workloadorchestration/targets/targetspecs.json   --extended-location @workloadorchestration/targets/customlocation.json   --context-id "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Edge/contexts/$RESOURCE_GROUP-context"
+az workload-orchestration target create   --resource-group "$RESOURCE_GROUP"   --location "$LOCATION"   --name "${RESOURCE_GROUP}-corporate"   --display-name "${RESOURCE_GROUP}-corporate"   --hierarchy-level "corporate"   --capabilities '["grocery","home","apparel","petrol"]'   --description "all capabilities"   --solution-scope "retailapp"   --target-specification @workloadorchestration/targets/targetspecs.json   --extended-location @workloadorchestration/targets/customlocation.json   --context-id "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Edge/contexts/$RESOURCE_GROUP-context"
+az workload-orchestration target create   --resource-group "$RESOURCE_GROUP"   --location "$LOCATION"   --name "${RESOURCE_GROUP}-localstore-1"   --display-name "${RESOURCE_GROUP}-localstore-1"   --hierarchy-level "local"   --capabilities '["grocery","home"]'   --description "grocery and home store"   --solution-scope "retailapp"   --target-specification @workloadorchestration/targets/targetspecs.json   --extended-location @workloadorchestration/targets/customlocation.json   --context-id "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Edge/contexts/$RESOURCE_GROUP-context"
+az workload-orchestration target create   --resource-group "$RESOURCE_GROUP"   --location "$LOCATION"   --name "${RESOURCE_GROUP}-localstore-2"   --display-name "${RESOURCE_GROUP}-localstore-2"   --hierarchy-level "local"   --capabilities '["apparel"]'   --description "apparel store"   --solution-scope "retailapp"   --target-specification @workloadorchestration/targets/targetspecs.json   --extended-location @workloadorchestration/targets/customlocation.json   --context-id "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Edge/contexts/$RESOURCE_GROUP-context"
 
 # create solutions
 echo "create solutions ..."
 # Create schema 
 echo "create solution schema ..."
-az workload-orchestration schema create --resource-group $RESOURCE_GROUP --schema-file workloadorchestration/solution/app-schema.yaml --schema-name app-schema --version 1.0.0
+az workload-orchestration schema create --resource-group $RESOURCE_GROUP --schema-file workloadorchestration/solution/retail-app-schema.yaml --schema-name retail-app-schema --version 1.0.0
 
 echo "create solution template ..."
-az workload-orchestration solution-template create --resource-group $RESOURCE_GROUP --location $LOCATION --config-template-file workloadorchestration/solution/app-template.yaml --solution-template-name app-solution --version 1.0.0 --capabilities '["azure-soap","azure-shampoo"]' --specification @workloadorchestration/solution/app-specs.json --enable-external-validation false --description "app solution"
+az workload-orchestration solution-template create --resource-group $RESOURCE_GROUP --location $LOCATION --config-template-file workloadorchestration/solution/retail-app-template.yaml --solution-template-name retail-app-solution-gh --version 1.0.0 --capabilities '["grocery","home"]' --specification @workloadorchestration/solution/app-specs.json --enable-external-validation false --description "retail app solution - grocery and home"
+az workload-orchestration solution-template create --resource-group $RESOURCE_GROUP --location $LOCATION --config-template-file workloadorchestration/solution/retail-app-template.yaml --solution-template-name retail-app-solution-a --version 1.0.0 --capabilities '["apparel"]' --specification @workloadorchestration/solution/app-specs.json --enable-external-validation false --description "retail app solution - grocery and home"
+az workload-orchestration solution-template create --resource-group $RESOURCE_GROUP --location $LOCATION --config-template-file workloadorchestration/solution/retail-app-template.yaml --solution-template-name retail-app-solution-p --version 1.0.0 --capabilities '["petrol"]' --specification @workloadorchestration/solution/app-specs.json --enable-external-validation false --description "retail app solution - grocery and home"
 
 
 
