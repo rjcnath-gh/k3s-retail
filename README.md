@@ -1,10 +1,14 @@
-# k3s setup with Codespaces
+# Workload-Orchestration Quickstart
 
-## Reproducible Azure CLI in the devcontainer
+## Summary:
+This quickstart is intended to configure a sandbox environment and setup a working workload-orchestration environment to dabble.
 
-This repository's devcontainer pins the Azure CLI to a known-good version and performs a small cleanup on Codespace creation to avoid a common import mismatch between the system's `/opt/az` site-packages and extension-vendored `azure` packages.
+## Get Started
+### 1. Login to Azure with your credentials - follow instructions to open browser and input code
+####   az login --tenant TENANT_ID --use-device-code
 
-- The `Dockerfile` installs `azure-cli` (pinned via `ARG AZ_CLI_VERSION`) so Codespaces built from this image have a reproducible CLI bundle.
-- The devcontainer `postCreateCommand` runs `az upgrade --yes` (idempotent) and removes user `pip --user` azure packages that can shadow the CLI installation. This prevents errors like "cannot import name 'get_arm_endpoints' from 'azure.mgmt.core.tools'".
+### 2. Start the onboarding process - setup will take ~10-12 mins
+####   . .devcontainer/woquickstart.sh
 
-If you need a different CLI version, update `ARG AZ_CLI_VERSION` in the `Dockerfile` and rebuild the Codespace. Note: the Dockerfile now strictly requires the specified package version; the build will fail if the exact `AZ_CLI_VERSION` is not available from the apt repository.
+### 3. Access the WO Portal to configure, publish and deploy sample applications onto the edge cluster
+#### https://portal.digitaloperations.configmanager.azure.com
